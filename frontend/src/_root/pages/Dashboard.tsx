@@ -1,5 +1,3 @@
-import React from "react";
-
 const Dashboard = () => {
   return (
     <main className="ml-64 p-8">
