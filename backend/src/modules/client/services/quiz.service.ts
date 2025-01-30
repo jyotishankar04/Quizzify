@@ -1,4 +1,6 @@
+import { quizLevel } from "@prisma/client";
 import { model } from "../../../config/gemini.config";
+import prisma from "../../../config/prisma.config";
 
 export interface IQuizPrompt {
   topic: string;
@@ -6,6 +8,26 @@ export interface IQuizPrompt {
   quizLength: number;
   quizLevel: string;
 }
+
+export type QuizCreationProps = {
+  topic: string;
+  topicContext: string;
+  quizLength: number;
+  quizLevel: string;
+  quizDuration: number;
+  author: {
+    id: string;
+  };
+  questions: {
+    id: string;
+    text: string;
+    Option: {
+      id: string;
+      text: string;
+      isCorrect: boolean;
+    }[];
+  }[];
+};
 
 const getQuizPrompt = ({
   topic,
@@ -31,6 +53,7 @@ Each question must include:
 2. The question text, relevant to the topic and context.
 3. Four answer options, each with a unique identifier.
 4. A field indicating which option is correct (isCorrect: true for the correct option, false for others).
+5. Each question should be structured in proper JSON format.
 
 The output should be a valid JSON object structured like this:
 {
@@ -62,18 +85,75 @@ Ensure:
 - All questions align with the specified topic, context, and difficulty level.
 - The difficulty level directly impacts the complexity of the questions and answers.
 - Only valid JSON is generated as the output.
-- The number of questions matches the specified quiz length.`;
+- The number of questions matches the specified quiz length.
+- The whole structure is valid JSON and can be parsed correctly.
+`;
   return prompt;
 };
 
-const getQuizes = async (prompt: string) => {
-  const result = await model.generateContentStream(prompt);
+const pushQuizesToDb = async (data: QuizCreationProps) => {
+  try {
+    const result = await prisma.quiz.create({
+      data: {
+        topic: data.topic,
+        topicContext: data.topicContext,
+        quizLength: data.quizLength,
+        quizLevel: data.quizLevel as quizLevel,
+        quizDuration: data.quizDuration,
+        author: {
+          connect: {
+            id: data.author.id,
+          },
+        },
+        questions: {
+          create: data.questions.map((question) => ({
+            text: question.text,
+            options: {
+              create: question.Option.map((option) => ({
+                text: option.text,
+                isCorrect: option.isCorrect,
+              })),
+            },
+          })),
+        },
+      },
+      include: {
+        questions: {
+          include: {
+            options: true,
+            _count: true,
+          },
+        },
+        submissions: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+          },
+        },
 
-  for await (const chunk of result.stream) {
-    const chunkText = chunk.text();
-    process.stdout.write(chunkText);
+        _count: true,
+      },
+    });
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Error in creating the quiz!");
   }
-  return result;
 };
 
-export { getQuizPrompt };
+export { getQuizPrompt, pushQuizesToDb };

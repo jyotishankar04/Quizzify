@@ -10,7 +10,6 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (!token) {
     return next(createHttpError(400, "Access Denied!, Token is missing"));
   }
-
   try {
     const { id, email } = decodeAuthToken(token);
     const _req = req as ICustomRequest;
@@ -18,9 +17,13 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
       id,
       email,
     };
-
+    if (!id || !email) {
+      res.clearCookie("authToken");
+      return next(createHttpError(400, "Access Denied!, Invalid Token"));
+    }
     next();
   } catch (err) {
+    res.clearCookie("authToken");
     return next(createHttpError(400, "Access Denied!, Invalid Token"));
   }
 };

@@ -14,12 +14,111 @@ datasource db {
 }
 
 model users {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  avatar    String?
-  avatarId  String?
+  id           String       @id @default(uuid())
+  email        String       @unique
+  password     String
+  name         String
+  avatar       String?
+  avatarId     String?
+  role         role         @default(user)
+  subscription subscription @default(free)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  quizzes     Quiz[] // Quizzes created by the user
+  submissions Submission[] // Submissions made by the user
+  Attempt     Attempt[]
+}
+
+model Quiz {
+  id           String    @id @default(uuid())
+  topic        String
+  topicContext String
+  quizLevel    quizLevel @default(noob)
+  quizLength   Int       @default(5)
+  isPublic     Boolean   @default(true)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  quizDuration Int      @default(900)
+
+  questions Question[] // Questions in the quiz
+
+  authorId String
+  author   users  @relation(fields: [authorId], references: [id])
+
+  submissions Submission[] // Submissions for this quiz
+  Attempt     Attempt[]
+}
+
+model Question {
+  id      String   @id @default(uuid())
+  text    String
+  options Option[]
+  quizId  String?
+  Quiz    Quiz?    @relation(fields: [quizId], references: [id])
+}
+
+model Option {
+  id         String   @id @default(uuid())
+  text       String
+  isCorrect  Boolean
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+}
+
+model Submission {
+  id     String @id @default(uuid())
+  userId String
+  user   users  @relation(fields: [userId], references: [id])
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
+
+  avgScore      Float @default(0)
+  avgDuration   Float @default(0)
+  totalAttempts Int   @default(0)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Attempt   Attempt[]
+
+  @@unique([userId, quizId])
+}
+
+model Attempt {
+  id String @id @default(uuid())
+
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id])
+
+  totalScore     Int
+  totalQuestions Int
+  quizDuration   Float
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  users   users?  @relation(fields: [usersId], references: [id])
+  usersId String?
+  Quiz    Quiz?   @relation(fields: [quizId], references: [id])
+  quizId  String?
+}
+
+enum quizLevel {
+  noob
+  beginner
+  intermediate
+  advanced
+  master
+}
+
+enum role {
+  user
+  admin
+}
+
+enum subscription {
+  free
+  starter
+  pro
 }

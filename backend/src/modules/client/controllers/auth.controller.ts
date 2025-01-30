@@ -11,6 +11,7 @@ import {
   generateAuthToken,
   hashPassword,
 } from "../services/auth.service";
+import { ICustomRequest } from "../../../types/client.types";
 
 export const register = async (
   req: Request,
@@ -19,6 +20,7 @@ export const register = async (
 ): Promise<any> => {
   try {
     const body = req.body;
+
     const validate = clientRegisterValidator.safeParse(body);
     if (!validate.success) {
       return next(createHttpError(400, validate.error.errors[0].message));
@@ -74,7 +76,7 @@ export const login = async (
     }
     const user = await checkIsUserExist(email);
     if (!user) {
-      return res.status(400).json({ message: "User does not exist" });
+      return next(createHttpError(400, "User not found"));
     }
 
     const isPasswordValid = await comparePassword({
@@ -92,7 +94,8 @@ export const login = async (
     });
 
     return res.status(200).json({
-      success: "User logged in successfully!",
+      success: true,
+      message: "User authenticated successfully!",
       data: {
         ...user,
         password: "",
@@ -104,14 +107,48 @@ export const login = async (
   }
 };
 
+export const getSession = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const _req = req as ICustomRequest;
+    const user = _req.user;
+
+    const userExist = await checkIsUserExist(user.email);
+    if (!userExist) {
+      return next(createHttpError(404, "User not found"));
+    }
+    return res.status(200).json({
+      success: true,
+      message: "User authenticated successfully!",
+      data: {
+        ...userExist,
+        password: "",
+      },
+    });
+  } catch (error) {
+    res.clearCookie("authToken");
+    console.log(error);
+    return next(createHttpError(400, "Authentication failed!"));
+  }
+};
+
 export const logout = async (req: Request, res: Response): Promise<any> => {
   try {
     res.clearCookie("authToken", {
       httpOnly: true,
     });
-    return res.status(200).json({ message: "Logged out successfully" });
+    return res.status(200).json({
+      success: true,
+      message: "Logout successful!",
+    });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ message: "Logout failed" });
+    return res.status(400).json({
+      success: false,
+      message: "Logout failed!",
+    });
   }
 };

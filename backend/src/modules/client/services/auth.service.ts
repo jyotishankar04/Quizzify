@@ -82,13 +82,13 @@ const generateAuthToken = (params: IAuthTokenParams): string => {
   return token;
 };
 const decodeAuthToken = (token: string): IAuthTokenParams => {
-  const decoded = jwt.verify(
-    token,
-    _config.JWT_SECRET as string
-  ) as IAuthTokenParams;
+  const decoded = jwt.verify(token, _config.JWT_SECRET as string) as {
+    params: IAuthTokenParams;
+  };
+
   return {
-    id: decoded.id,
-    email: decoded.email,
+    id: decoded.params.id,
+    email: decoded.params.email,
   };
 };
 
