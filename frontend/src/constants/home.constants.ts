@@ -1,3 +1,5 @@
+import { Instagram, Linkedin, Twitter } from "lucide-react";
+
 export const _navLinks = [
   {
     title: "Home",
@@ -144,13 +146,14 @@ export const _testimonials = [
 export const _pricingData = [
   {
     id: "free",
-    title: "Free",
+    title: "Free (Beta)",
     priceMonthly: "₹0",
     priceAnnual: "₹0",
     discount: "", // No discount for the free plan
-    features: ["5 Quizzes ", "Basic analytics", "5 Questions per quiz"],
+    features: ["Everything free"],
     buttonText: "Get Started",
     highlighted: false,
+    isDisabled: false,
   },
   {
     id: "starter",
@@ -169,6 +172,7 @@ export const _pricingData = [
     ],
     buttonText: "Get Started",
     highlighted: true,
+    isDisabled: true,
   },
   {
     id: "pro",
@@ -189,6 +193,7 @@ export const _pricingData = [
     ],
     buttonText: "Get Started",
     highlighted: false, // Highlighted card
+    isDisabled: true,
   },
 ];
 
@@ -223,23 +228,18 @@ export const _footerData = {
   socialLinks: [
     {
       platform: "Twitter",
-      url: "https://twitter.com/yourusername",
-      icon: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
+      url: "https://x.com/@devsuvam1",
+      icon: Twitter,
     },
     {
       platform: "Instagram",
-      url: "https://instagram.com/yourusername",
-      icon: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z",
+      url: "https://instagram.com/dev.suvam",
+      icon: Instagram,
     },
     {
       platform: "LinkedIn",
-      url: "https://linkedin.com/in/yourusername",
-      icon: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z",
-    },
-    {
-      platform: "Reddit",
-      url: "https://reddit.com/u/yourusername",
-      icon: "M12 2c-2.21 0-4 1.79-4 4 0 1.86 1.26 3.42 3 3.86v2.14h-2v2h2v7h2v-7h2v-2h-2v-2.14c1.74-.44 3-2 3-3.86 0-2.21-1.79-4-4-4zM12 4c1.1 0 2 .9 2 2 0 .94-.47 1.77-1.18 2.21-.71.44-1.57.63-2.56.51-.56-.07-1.04-.23-1.5-.47-.47-.24-.88-.55-1.23-.9-.35-.35-.65-.76-.9-1.23-.24-.46-.4-.94-.47-1.5-.12-1-.07-1.85.51-2.56C10.23 6.47 11.06 6 12 6z",
+      url: "https://linkedin.com/in/jyotishankar-patra",
+      icon: Linkedin,
     },
   ],
   quickLinks: [..._navLinks],

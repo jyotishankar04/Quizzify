@@ -16,6 +16,13 @@ html{
     @apply bg-[#171717];
 }
 
+.btn{
+    @apply  rounded-sm;
+}
+
+.select{
+    @apply rounded-sm;
+}
 
 /* Text  */
 
@@ -30,15 +37,6 @@ html{
 
 
 /* Button  */
-.btn{
-    @apply px-4 py-2 rounded-md hover:scale-105 transition-all duration-300 ease-in-out;
-}
-.btn-primary{
-    @apply bg-[#2563ea] border-[#2563ea] text-white hover:bg-[#1855da] ;
-}
-.btn-secondary{
-    @apply bg-[#262626] border-[#262626] text-white hover:bg-[#383838] hover:border-[#383838] ;
-}
 
 
 
@@ -46,7 +44,7 @@ html{
 /* Card  */
 
 .card{
-    @apply rounded-md p-4;
+    @apply  bg-white border border-gray-200 rounded-lg p-6;
 }
 
 /* Input  */

@@ -57,6 +57,7 @@ const Pricing: React.FC = () => {
               highlighted={plan.highlighted}
               isAnnual={isAnnual} // Pass the pricing toggle state
               discount={plan.discount}
+              isDisabled={plan.isDisabled}
             />
           ))}
         </div>

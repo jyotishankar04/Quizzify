@@ -1,7 +1,6 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 const AuthLayout = () => {
-  const isAuthenticated = false;
   return (
     <section id="" className="h-screen  overflow-hidden w-full bg-neutral-100">
       <div className="flex md:flex-row h-full items-stretch">
@@ -17,16 +16,12 @@ const AuthLayout = () => {
             </p> */}
           </div>
         </div>
-        {/* Forms Side */}
-        {isAuthenticated ? (
-          <Navigate to="/app" />
-        ) : (
-          <div className="w-full md:w-1/2 px-4 py-12 md:py-20 overflow-y-auto">
-            <div className="max-w-md mx-auto">
-              <Outlet />
-            </div>
+
+        <div className="w-full md:w-1/2 px-4 py-12 md:py-20 overflow-y-auto">
+          <div className="max-w-md mx-auto">
+            <Outlet />
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

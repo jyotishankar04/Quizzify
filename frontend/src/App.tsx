@@ -5,10 +5,19 @@ import AuthLayout from "./_auth/AuthLayout";
 import Home from "./_home/Home";
 import RootLayout from "./_root/RootLayout";
 import Dashboard from "./_root/pages/Dashboard";
+import { Toaster } from "react-hot-toast";
+import QuizCreatePage from "./_root/pages/QuizCreatePage";
+import Quizzes from "./_root/pages/QuizzesPage";
+import QuizDash from "./_root/pages/QuizDash";
+import QuizPlayground from "./_root/pages/QuizPlayground";
+import AttemptResults from "./_root/pages/AttemptResults";
+import ProfilePage from "./_root/pages/ProfilePage";
+import EditQuizPage from "./_root/pages/EditQuizPage";
 
 const App = () => {
   return (
-    <main className="w-full h-screen text-white">
+    <main className="w-full h-screen text-white" data-theme="light ">
+      <Toaster />
       <Routes>
         {/* Public route */}
         <Route index element={<Home />} />
@@ -22,19 +31,31 @@ const App = () => {
           <Route
             path="quizzes"
             element={
-              <div>
+              <>
                 <Outlet />
-              </div>
+              </>
             }
           >
-            <Route index element={<div>Quizzes</div>} />
-            <Route path=":quizId" element={<div>Quiz</div>} />
-            <Route path="create" element={<div>Create</div>} />
-            <Route path=":quizId/play" element={<div>Edit</div>} />
-            <Route path=":quizId/anlytics" element={<div>Leaderboard</div>} />
+            <Route index element={<Quizzes />} />
+            <Route path=":quizId" element={<QuizDash />} />
+            <Route path="create" element={<QuizCreatePage />} />
+            <Route path="play/:quizId" element={<QuizPlayground />} />
+            <Route path="edit/:quizId" element={<EditQuizPage />} />
+            <Route path="results" element={<AttemptResults />} />
+            {/* <Route path=":quizId/anlytics" element={<div>Leaderboard</div>} /> */}
           </Route>
-          <Route path="history" element={<div>History</div>} />
-          <Route path="reports" element={<div>Reports</div>} />
+          {/* <Route path="history" element={<div>History</div>} /> */}
+          {/* <Route path="reports" element={<div>Reports</div>} /> */}
+          <Route
+            path="settings"
+            element={
+              <div className=" w-full h-full flex justify-center flex-col gap-4 items-center text-gray-800 text-4xl font-bold">
+                <h1>Settings</h1>
+                <p className="text-2xl">Adding Soon....</p>
+              </div>
+            }
+          />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
 
         {/* Private route */}

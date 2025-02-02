@@ -2,6 +2,7 @@ import { _footerData, _navLinks } from "../../constants/home.constants";
 
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const HomeNav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,12 +36,13 @@ const HomeNav = () => {
                 {link.title}
               </a>
             ))}
-            <a
-              href="/auth/signin"
-              className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+            <Link
+              to="/app"
+              className="  btn btn-primary flex justify-center items-center"
+              onClick={() => setIsMenuOpen(false)}
             >
-              Login
-            </a>
+              Try for free
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -81,13 +83,14 @@ const HomeNav = () => {
               {link.title}
             </a>
           ))}
-          <a
-            href="/auth/signin"
-            className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors mt-4"
+
+          <Link
+            to="/app"
+            className="block text-neutral-300 hover:text-white hover:bg-neutral-700/50 px-3 py-2 rounded-md transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
-            Login
-          </a>
+            Try for free
+          </Link>
         </div>
       </div>
     </nav>

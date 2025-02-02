@@ -9,6 +9,7 @@ interface PricingCardProps {
   highlighted: boolean;
   isAnnual: boolean; // New prop to handle the selected pricing type
   discount: string;
+  isDisabled: boolean;
 }
 
 const PricingCard: React.FC<PricingCardProps> = ({
@@ -20,6 +21,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
   highlighted,
   isAnnual, // Destructure the new prop
   discount, // Destructure the discount prop
+  isDisabled,
 }) => {
   // Decide which price to display based on the pricing type (monthly or annual)
   const displayPrice = isAnnual ? priceAnnual : priceMonthly;
@@ -27,6 +29,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
   return (
     <div
       className={`bg-white rounded-2xl shadow-lg text-neutral-900 p-8 border flex flex-col ${
+        isDisabled ? "opacity-50 cursor-not-allowed grayscale" : ""
+      } ${
         highlighted
           ? "border-indigo-600 transform scale-105 shadow-xl"
           : "border-neutral-200 hover:border-indigo-500"
@@ -78,11 +82,18 @@ const PricingCard: React.FC<PricingCardProps> = ({
         ))}
       </ul>
       <button
+        disabled={isDisabled}
         className={`w-full py-3 px-6 rounded-lg font-semibold ${
           highlighted
             ? "bg-indigo-600 text-white hover:bg-indigo-700"
             : "border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50"
-        } transition-colors`}
+        } transition-colors
+        ${
+          isDisabled
+            ? "cursor-not-allowed disabled opacity-50 grayscale"
+            : "cursor-pointer "
+        } 
+        `}
       >
         {buttonText}
       </button>

@@ -1,60 +1,74 @@
-// import { createContext, useContext, useEffect, useState } from "react";
-// import { TContextType } from "../types";
+import { createContext, useContext, useState, useCallback } from "react";
+import { TContextType } from "../types";
+import { checkSession } from "../lib/axios/axiosApis";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-// export const INITIAL_USER = {
-//   id: "",
-//   name: "",
-//   email: "",
-//   role: "",
-//   imageUrl: "",
-// };
+export const INITIAL_USER = {
+  id: "",
+  name: "",
+  email: "",
+  avatar: "",
+  createdAt: "",
+  updatedAt: "",
+};
 
-// const INITIAL_STATE = {
-//   isAuthenticated: false,
-//   user: INITIAL_USER,
-//   isLoading: false,
-//   setUser: () => {},
-//   setIsAuthenticated: () => {},
-//   checkAuthUser: async () => false as boolean,
-// };
+const INITIAL_STATE = {
+  isAuthenticated: false,
+  user: INITIAL_USER,
+  isLoading: false,
+  setUser: () => {},
+  setIsAuthenticated: () => {},
+  checkAuthUser: async () => false,
+};
 
-// const AuthContext = createContext<TContextType>(INITIAL_STATE);
+const AuthContext = createContext<TContextType>(INITIAL_STATE);
 
-// const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-//   const [user, setUser] = useState(INITIAL_USER);
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-//   const [isLoading, setIsLoading] = useState(false);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState(INITIAL_USER);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-//   const checkAuthUser = async () => {
-//     setIsLoading(true);
-//     try {
-//       // Simulate API call
-//       const response = await new Promise((resolve) =>
-//         setTimeout(
-//           () => resolve({ isAuthenticated: true, user: INITIAL_USER }),
-//           1000
-//         )
-//       );
-//       setIsAuthenticated(response.isAuthenticated);
-//       setUser(response.user);
-//       return response.isAuthenticated;
-//     } catch (error) {
-//       console.error(error);
-//       return false;
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  const checkAuthUser = useCallback(async () => {
+    setIsLoading(true);
+    console.log("Checking authentication...");
+    try {
+      const response = await checkSession();
+      console.log("checkSession response:", response);
 
-//   const value = {
-//     user,
-//     setUser,
-//     isAuthenticated,
-//     setIsAuthenticated,
-//     isLoading,
-//     checkAuthUser,
-//   };
-//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-// };
+      if (!response?.success) {
+        setIsAuthenticated(false);
+        setUser(INITIAL_USER);
+        navigate("/auth/signin");
+        return false;
+      }
+      toast.success("Authentication successful");
+      setIsAuthenticated(true);
+      setUser(response.data);
+      return true;
+    } catch (error) {
+      toast.error("Authentication failed, please login again");
+      setIsAuthenticated(false);
+      navigate("/auth/signin");
+      console.error(error);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [navigate]);
 
-// export default AuthContext;
+  const value = {
+    user,
+    setUser,
+    isAuthenticated,
+    setIsAuthenticated,
+    isLoading,
+    checkAuthUser,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuthContext = () => useContext(AuthContext);

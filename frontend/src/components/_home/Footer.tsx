@@ -18,13 +18,7 @@ const Footer = () => {
                   href={link.url}
                   className="hover:text-white transition-colors"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d={link.icon}></path>
-                  </svg>
+                  <link.icon />
                 </a>
               ))}
             </div>

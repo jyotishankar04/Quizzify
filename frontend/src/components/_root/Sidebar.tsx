@@ -1,6 +1,31 @@
+import { Link } from "react-router-dom";
 import SidebarItem from "./SidebarItem";
+import { Plus, TriangleAlert } from "lucide-react";
+import { useLogoutUserAuthentication } from "../../lib/reactquery/react-query";
+import toast from "react-hot-toast";
+import LoadingModal from "../PupUploading";
 
 const Sidebar = () => {
+  const {
+    mutateAsync: logoutUserAccount,
+    isPending: logoutLoading,
+    isSuccess,
+  } = useLogoutUserAuthentication();
+
+  if (logoutLoading) {
+    return (
+      <LoadingModal
+        isVisible={logoutLoading}
+        text="Logging out..."
+        textContext="Please wait while we process your request"
+      />
+    );
+  }
+  if (isSuccess) {
+    toast.success("Logout successful");
+    window.location.reload();
+  }
+
   const _sidebarLinks = [
     {
       title: "Dashboard",
@@ -9,7 +34,7 @@ const Sidebar = () => {
     },
     {
       title: "Quizzes",
-      icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h2a1 1 0 001-1V7a1 1 0 00-1 1h-3a1 1 0 00-1 1v3a1 1 0 001 1h2a1 1 0 001-1v-3a1 1 0 00-1-1h-3a1 1 0 00-1 1v1h2a1 1 0 001 1h3a1 1 0 001-1v-1h-2a1 1 0 00-1-1h2a1 1 0 001 1v3a1 1 0 001 1h-3a1 1 0 00-1-1v-1h2a1 1 0 001 1h3a1 1 0 001-1v-3a1 1 0 00-1-1h-2a1 1 0 00-1 1h-3zM9 14h4V8h-4v6z",
+      icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h13a2 2 0 012 2v10a2 2 0 01-2 2h-5m-1 4h2a1 1 0 001-1V7a1 1 0 00-1-1h-3a1 1 0 00-1 1v3a1 1 0 001 1h2a1 1 0 001-1v-3a1 1 0 00-1-1h-3a1 1 0 00-1 1v1h2a1 1 0 001 1h3a1 1 0 001-1v-1h-2a1 1 0 00-1-1h2a1 1 0 001 1v3a1 1 0 001 1h-3a1 1 0 00-1-1v-1h2a1 1 0 001 1h3a1 1 0 001-1v-3a1 1 0 00-1-1h-2a1 1 0 00-1 1h-3zM9 14h4V8h-4v6z",
       link: "/app/quizzes",
     },
     {
@@ -23,13 +48,54 @@ const Sidebar = () => {
       link: "/app/settings",
     },
   ];
+
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 z-30">
+    <aside className="h-screen w-64 bg-white border-r border-gray-200 z-30">
+      {/* Logout Confirmation Modal */}
+      <input type="checkbox" id="logoutDialog" className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle" role="dialog">
+        <div className="modal-box text-gray-900 flex flex-col items-center">
+          <TriangleAlert className="text-yellow-500 w-16 h-16 bg-yellow-100 p-3 rounded-full" />
+          <h3 className="font-bold text-lg">Warning!</h3>
+          <p>Are you sure you want to logout?</p>
+          <div className="modal-action w-full grid grid-cols-2">
+            <button
+              onClick={() => {
+                document.getElementById("logoutDialog")?.click();
+              }}
+              className="btn btn-outline"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={async () => {
+                await logoutUserAccount();
+              }}
+              disabled={logoutLoading}
+              className={`btn btn-error text-white ${
+                logoutLoading ? "loading" : ""
+              }`}
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Sidebar Content */}
       <div className="flex flex-col h-full">
         <div className="p-6">
           <h1 className="text-2xl font-bold text-blue-600">QuizApp</h1>
         </div>
         <nav className="flex-1 p-4">
+          <Link
+            to="/app/quizzes/create"
+            className="w-full btn btn-outline mb-5 font-bold flex items-center justify-center"
+          >
+            Create Quiz
+            <Plus className="ml-2" />
+          </Link>
+
           <ul className="space-y-2">
             {_sidebarLinks.map((link, index) => (
               <SidebarItem
@@ -42,7 +108,10 @@ const Sidebar = () => {
           </ul>
         </nav>
         <div className="p-4 border-t border-gray-200">
-          <button className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors w-full">
+          <label
+            htmlFor="logoutDialog"
+            className="flex items-center px-4 py-3 text-gray-600 cursor-pointer hover:bg-gray-100 rounded-lg transition-colors w-full"
+          >
             <svg
               className="w-5 h-5 mr-3"
               fill="none"
@@ -57,7 +126,7 @@ const Sidebar = () => {
               ></path>
             </svg>
             Logout
-          </button>
+          </label>
         </div>
       </div>
     </aside>

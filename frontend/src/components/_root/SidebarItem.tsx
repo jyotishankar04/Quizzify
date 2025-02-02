@@ -8,10 +8,10 @@ interface SidebarItemProps {
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, title, link }) => {
   return (
-    /*************  ✨ Codeium Command 🌟  *************/
     <li>
       <NavLink
         to={link}
+        end
         className={({ isActive }) => {
           let className =
             "flex items-center px-4 py-3 text-gray-700 bg-gray-100 rounded-lg";
@@ -37,7 +37,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, title, link }) => {
         <span className="ml-3">{title}</span>
       </NavLink>
     </li>
-    /******  19bfb874-d7b8-4efd-a1da-d08da2fad19e  *******/
   );
 };
 

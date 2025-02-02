@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { _howItWorks } from "../../constants/home.constants";
 import HIWCard from "./HIWCard";
 
@@ -50,7 +51,8 @@ const HowItWorks = () => {
           className="text-center mt-16 animate__animated animate__fadeInUp"
           id="el-0p30nnxk"
         >
-          <button
+          <Link
+            to="/app/quizzes/create"
             className="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-105 transition-all font-semibold inline-flex items-center gap-2"
             id="el-x8hri17j"
           >
@@ -70,7 +72,7 @@ const HowItWorks = () => {
                 id="el-8dn3ejjc"
               ></path>
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
 

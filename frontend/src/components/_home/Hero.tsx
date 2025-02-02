@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import QuizGredientCard from "./QuizGredientCard";
 
 const Hero = () => {
@@ -28,18 +29,19 @@ const Hero = () => {
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate__animated animate__fadeInUp animate__delay-2s"
             id="el-qfdqxmne"
           >
-            <button
+            <Link
+              to="/app/quizzes/create"
               className="px-8 py-4 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transform hover:scale-105 transition-all font-semibold"
               id="el-idwpiw0r"
             >
-              Try Demo Quiz
-            </button>
-            <button
+              Try Now
+            </Link>
+            {/* <button
               className="px-8 py-4 bg-neutral-800 text-white rounded-lg hover:bg-neutral-700 transform hover:scale-105 transition-all font-semibold"
               id="el-3bi8itff"
             >
               Learn More
-            </button>
+            </button> */}
           </div>
         </div>
         {/*  */}
