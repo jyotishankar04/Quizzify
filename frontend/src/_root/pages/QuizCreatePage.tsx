@@ -8,6 +8,7 @@ import { TQuizCreate } from "../../types";
 import CreatingLoading from "../../components/_root/_quiz/CreatingLoading";
 import useSingleQuizStore from "../../context/zustand/singleQuizStore";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 // QuizSetupPage Component
 const QuizCreatePage: React.FC = () => {
@@ -15,9 +16,15 @@ const QuizCreatePage: React.FC = () => {
   const { setQuiz } = useSingleQuizStore();
   const { register, handleSubmit, reset } = useForm();
   const { mutateAsync, data: quiz, isPending, isSuccess } = useCreateQuiz();
-
+  const queryClient = useQueryClient();
   if (isSuccess) {
     navigate("/app/quizzes/" + quiz.data.id);
+    queryClient.invalidateQueries({
+      queryKey: ["quizzes"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["dashboardStats"],
+    });
   }
 
   const handleGenerateQuiz = handleSubmit(async (data) => {

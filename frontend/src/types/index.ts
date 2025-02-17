@@ -128,3 +128,13 @@ export type TQuizCreate = {
   quizLength: number;
   quizLevel: string;
 };
+
+export type TProfileUpdate = {
+  name?: string;
+  instagram_username?: string;
+  twitter_username?: string;
+  github_username?: string;
+  website_url?: string;
+  bio?: string;
+  address?: string;
+};

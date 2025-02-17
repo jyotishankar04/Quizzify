@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkAuthUser = useCallback(async () => {
     setIsLoading(true);
-    console.log("Checking authentication...");
     try {
       const response = await checkSession();
       console.log("checkSession response:", response);
@@ -56,7 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [navigate]);
+  }, []);
 
   const value = {
     user,

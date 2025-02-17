@@ -12,9 +12,15 @@ import {
   loginUserAccount,
   logoutUserAccount,
   submitAnswer,
+  updateProfile,
   updateQuizData,
 } from "../axios/axiosApis";
-import { TQuizCreate, TUserCreateProp, TUserLoginProp } from "../../types";
+import {
+  TProfileUpdate,
+  TQuizCreate,
+  TUserCreateProp,
+  TUserLoginProp,
+} from "../../types";
 
 export const useCreateUserAuthentication = () => {
   return useMutation({
@@ -107,6 +113,12 @@ export const useGetProfile = () => {
     queryFn: () => getMyProfile(),
     staleTime: 1000 * 60 * 5,
     enabled: true,
+  });
+};
+
+export const useUpdateProfileData = () => {
+  return useMutation({
+    mutationFn: (data: TProfileUpdate) => updateProfile({ ...data }),
   });
 };
 

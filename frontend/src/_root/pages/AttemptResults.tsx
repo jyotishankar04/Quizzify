@@ -21,6 +21,9 @@ const AttemptResults = () => {
     queryClient.invalidateQueries({
       queryKey: ["quizzes"],
     });
+    queryClient.invalidateQueries({
+      queryKey: ["dashboardStats"],
+    });
   }
   if (isLoading) {
     return <SubmitLoading />;

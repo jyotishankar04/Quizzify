@@ -72,4 +72,37 @@ const questionEditValidator = z.array(
   { required_error: "Questions are required" }
 );
 
-export { createQuizValidator, jsonCreateQuizValidator, questionEditValidator };
+const userUpdateValidator = z.object({
+  name: z
+    .string()
+    .min(3, { message: "Name must be at least 3 characters long" })
+    .optional(),
+  address: z
+    .string()
+    .min(5, { message: "Address must be at least 5 characters long" })
+    .optional(),
+  twitter_username: z
+    .string()
+    .min(3, { message: "Enter a valid twitter username" })
+    .optional(),
+  github_username: z
+    .string()
+    .min(3, { message: "Enter a valid github username" })
+    .optional(),
+  linkedin_username: z
+    .string()
+    .min(3, { message: "Enter a valid linkedin username" })
+    .optional(),
+  website: z.string().min(3, { message: "Enter a valid website" }).optional(),
+  instagram_username: z
+    .string()
+    .min(3, { message: "Enter a valid instagram username" })
+    .optional(),
+});
+
+export {
+  createQuizValidator,
+  jsonCreateQuizValidator,
+  questionEditValidator,
+  userUpdateValidator,
+};

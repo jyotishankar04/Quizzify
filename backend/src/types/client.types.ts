@@ -5,4 +5,5 @@ export interface ICustomRequest extends Request {
     id: string;
     email: string;
   };
+  file?: Express.Multer.File;
 }

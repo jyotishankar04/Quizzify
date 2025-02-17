@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  TProfileUpdate,
   TQuizCreate,
   TUserCreateProp,
   TUserLoginProp,
@@ -88,6 +89,11 @@ export const getResultByAttemptId = async (id: string, attemptId: string) => {
 
 export const getMyProfile = async () => {
   const response = await axiosApi.get(`/user`);
+  return response.data;
+};
+
+export const updateProfile = async (data: TProfileUpdate) => {
+  const response = await axiosApi.patch(`/user`, data);
   return response.data;
 };
 

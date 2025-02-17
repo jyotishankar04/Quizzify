@@ -1,4 +1,4 @@
-import { Share, User } from "lucide-react";
+import { Share } from "lucide-react";
 import { getNormalMMdoYYformat } from "../../lib/momentjs";
 import { useGetProfile } from "../../lib/reactquery/react-query";
 import LoadingModal from "../../components/PupUploading";
@@ -89,7 +89,11 @@ const ProfilePage = () => {
       <div className="w-full max-w-7xl flex flex-row justify-between items-center card">
         <div className="flex items-start justify-start">
           <div className="w-40 h-40 overflow-hidden flex justify-center items-center border rounded-full">
-            <User className="w-full h-full" />
+            <img
+              src={data.data.avatar}
+              alt="Profile"
+              className="w-full h-full object-cover rounded-full"
+            />
           </div>
           <div className="ml-6 ">
             <h1 className="text-3xl font-bold mb-1">{data.data.name}</h1>

@@ -26,7 +26,13 @@ const QuizPlayQuestionCard: React.FC<props> = ({
   return (
     <div className="card">
       <div className="mb-8">
-        <h1 className="text-lg font-semibold text-gray-800/80">{text}</h1>
+        <h1
+          className={`text-lg font-semibold text-gray-800/80 ${
+            isRunning ? "" : ""
+          }`}
+        >
+          {isRunning ? text : "Quiestion is not visible while quiz is paused"}
+        </h1>
       </div>
       <div className="flex gap-2 flex-col">
         {options.map((option) => (
@@ -48,7 +54,7 @@ const QuizPlayQuestionCard: React.FC<props> = ({
               onChange={handleOptionChange}
               disabled={!isRunning}
             />
-            <span className="ml-2">{option.text}</span>
+            <span className="ml-2">{isRunning ? option.text : ""}</span>
           </div>
         ))}
       </div>

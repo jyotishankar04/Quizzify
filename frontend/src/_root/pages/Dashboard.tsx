@@ -166,7 +166,7 @@ const Dashboard = () => {
         </div>
         <div className="divide-y divide-gray-200">
           {dashboardStats.data.recentQuizes.map((quiz: any) => (
-            <div>
+            <div key={quiz.quizId}>
               <Link
                 to={`/app/quizzes/${quiz.quizId}`}
                 className="p-6 flex items-center justify-between space-x-4 border-b border-gray-200"

@@ -1,10 +1,17 @@
 import { Router } from "express";
-import { getUserProfile } from "../controllers/user.controller";
+import {
+  getUserProfile,
+  updateUserProfile,
+  uploadUserProfileImage,
+} from "../controllers/user.controller";
 import authMiddleware from "../middlewares/auth.middleware";
+import { upload } from "../../../middlewares/multer.middleware";
 
 const router = Router();
 
 router.use(authMiddleware);
 router.get("/", getUserProfile);
+router.post("/avatar", upload.single("avatar"), uploadUserProfileImage);
+router.patch("/", authMiddleware, updateUserProfile);
 
 export default router;

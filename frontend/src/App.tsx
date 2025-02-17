@@ -13,6 +13,8 @@ import QuizPlayground from "./_root/pages/QuizPlayground";
 import AttemptResults from "./_root/pages/AttemptResults";
 import ProfilePage from "./_root/pages/ProfilePage";
 import EditQuizPage from "./_root/pages/EditQuizPage";
+import SettingsPage from "./_root/pages/SettingsPage.tsx";
+import GeneralSettings from "./components/_root/_settings/GeneralSettings.tsx";
 
 const App = () => {
   return (
@@ -46,15 +48,31 @@ const App = () => {
           </Route>
           {/* <Route path="history" element={<div>History</div>} /> */}
           {/* <Route path="reports" element={<div>Reports</div>} /> */}
-          <Route
-            path="settings"
-            element={
-              <div className=" w-full h-full flex justify-center flex-col gap-4 items-center text-gray-800 text-4xl font-bold">
-                <h1>Settings</h1>
-                <p className="text-2xl">Adding Soon....</p>
-              </div>
-            }
-          />
+          <Route path="settings" element={<SettingsPage />}>
+            <Route
+              index
+              element={
+                <div className="w-full h-full flex justify-center items-center ">
+                  <h1 className="text-2xl font-bold">Settings</h1>
+                </div>
+              }
+            />
+            <Route path="general" element={<GeneralSettings />} />
+            <Route path="security" element={<div>Security</div>} />
+            <Route
+              path="billing"
+              element={
+                <div className="w-full h-full flex justify-center items-center flex-col">
+                  <h1 className="text-2xl font-bold">Billing</h1>
+                  <p className="text-gray-600">
+                    Payment service is not available
+                  </p>
+                </div>
+              }
+            />
+            <Route path="help" element={<div>Help & Support</div>} />
+            <Route path="*" element={<div>404</div>} />
+          </Route>
           <Route path="profile" element={<ProfilePage />} />
         </Route>
 
