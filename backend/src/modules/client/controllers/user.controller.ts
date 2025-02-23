@@ -79,6 +79,7 @@ const uploadUserProfileImage = async (
 ): Promise<any> => {
   try {
     const _req = req as ICustomRequest;
+    console.log(_req.file)
     const user = _req.user;
     const userExist = await checkIsUserExist(user.email);
     if (!userExist) {

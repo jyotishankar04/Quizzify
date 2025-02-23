@@ -1,4 +1,11 @@
-import { Share } from "lucide-react";
+import {
+  Instagram,
+  Linkedin,
+  Twitter,
+  Github,
+  Share,
+  Globe,
+} from "lucide-react";
 import { getNormalMMdoYYformat } from "../../lib/momentjs";
 import { useGetProfile } from "../../lib/reactquery/react-query";
 import LoadingModal from "../../components/PupUploading";
@@ -62,6 +69,38 @@ const ProfilePage = () => {
       ],
     },
   ];
+  const userSocials = [
+    {
+      name: "Github",
+      link: data.data.github_url || "",
+      icon: Github,
+      color: "bg-gray-600",
+    },
+    {
+      name: "Linkedin",
+      link: data.data.linkedin_url || "",
+      icon: Linkedin,
+      color: "bg-blue-600",
+    },
+    {
+      name: "Twitter",
+      link: data.data.twitter_url || "",
+      icon: Twitter,
+      color: "bg-sky-600",
+    },
+    {
+      name: "Instagram",
+      link: data.data.instagram_url || "",
+      icon: Instagram,
+      color: "bg-pink-600",
+    },
+    {
+      name: "Website",
+      link: data.data.website_url || "",
+      icon: Globe,
+      color: "bg-yellow-600",
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -105,6 +144,30 @@ const ProfilePage = () => {
                 {data.data.subscription}
               </span>{" "}
             </p>
+            <div className="flex gap-2 mt-2">
+              {userSocials.map((social, index) => {
+                if (social.link !== "" && social.link.length > 0) {
+                  return (
+                    <a
+                      key={index}
+                      href={social.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span
+                        className={
+                          "badge badge-primary w-8 h-8 p-1 flex justify-center items-center " +
+                          social.color
+                        }
+                      >
+                        <social.icon />
+                      </span>
+                    </a>
+                  );
+                }
+                return null;
+              })}
+            </div>
           </div>
         </div>
         <div>

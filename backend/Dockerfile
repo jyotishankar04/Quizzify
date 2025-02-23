@@ -33,7 +33,7 @@ COPY --from=build /app/prisma ./prisma
 # Copy only the built application
 COPY --from=build /app/dist ./dist
 
-# Ensure correct permissions
+# Ensure correct permissions =======
 RUN chown -R node:node /app && chmod -R 755 /app
 
 # Install PM2 globally

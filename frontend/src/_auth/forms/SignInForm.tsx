@@ -30,9 +30,7 @@ const SignInForm = () => {
     <>
       {/* Sign Up Section */}
       <div className="animate__animated  animate__fadeIn">
-        <h2 className="text-3xl font-bold text-neutral-900 mb-4">
-          Create New Account
-        </h2>
+        <h2 className="text-3xl font-bold text-neutral-900 mb-4">Sign In</h2>
         <p className="text-neutral-600 text-lg mb-8">
           Join our community and start creating quizzes
         </p>

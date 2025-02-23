@@ -15,6 +15,8 @@ import ProfilePage from "./_root/pages/ProfilePage";
 import EditQuizPage from "./_root/pages/EditQuizPage";
 import SettingsPage from "./_root/pages/SettingsPage.tsx";
 import GeneralSettings from "./components/_root/_settings/GeneralSettings.tsx";
+import SecuritySettings from "./components/_root/_settings/SecuritySettings.tsx";
+import HelpAndSupport from "./components/_root/_settings/HelpAndSupportSettings.tsx";
 
 const App = () => {
   return (
@@ -58,7 +60,7 @@ const App = () => {
               }
             />
             <Route path="general" element={<GeneralSettings />} />
-            <Route path="security" element={<div>Security</div>} />
+            <Route path="security" element={<SecuritySettings />} />
             <Route
               path="billing"
               element={
@@ -70,7 +72,7 @@ const App = () => {
                 </div>
               }
             />
-            <Route path="help" element={<div>Help & Support</div>} />
+            <Route path="help" element={<HelpAndSupport />} />
             <Route path="*" element={<div>404</div>} />
           </Route>
           <Route path="profile" element={<ProfilePage />} />

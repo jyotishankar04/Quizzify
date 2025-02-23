@@ -9,11 +9,15 @@ import {
   getResultByAttemptId,
   getSingleQuiz,
   getSingleQuizQuestionsByid,
+  getSupportQueries,
   loginUserAccount,
   logoutUserAccount,
+  manualPasswordUpdate,
+  sendSupportQuery,
   submitAnswer,
   updateProfile,
   updateQuizData,
+  uploadUserAvatar,
 } from "../axios/axiosApis";
 import {
   TProfileUpdate,
@@ -121,12 +125,45 @@ export const useUpdateProfileData = () => {
     mutationFn: (data: TProfileUpdate) => updateProfile({ ...data }),
   });
 };
+export const useUploadUserAvatar = () => {
+  return useMutation({
+    mutationFn: (data: FormData) => {
+      return uploadUserAvatar(data);
+    },
+  });
+};
+
+export const useManualPasswordUpdate = () => {
+  return useMutation({
+    mutationFn: (data: {
+      currentPassword: string;
+      newPassword: string;
+      confirmPassword: string;
+    }) => manualPasswordUpdate(data),
+  });
+};
 
 // Dashboard Stats
 export const useGetDashboardStats = () => {
   return useQuery({
     queryKey: ["dashboardStats"],
     queryFn: () => getDashboardStats(),
+    staleTime: 1000 * 60 * 5,
+    enabled: true,
+  });
+};
+
+// Support API
+export const useSendSupportQuery = () => {
+  return useMutation({
+    mutationFn: (data: { queryTitle: string; queryDescription: string }) =>
+      sendSupportQuery(data),
+  });
+};
+export const useGetSupportQueries = () => {
+  return useQuery({
+    queryKey: ["supportQueries"],
+    queryFn: () => getSupportQueries(),
     staleTime: 1000 * 60 * 5,
     enabled: true,
   });

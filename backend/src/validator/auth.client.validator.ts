@@ -25,4 +25,22 @@ const clientLoginValidator = z.object({
     .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
-export { clientRegisterValidator, clientLoginValidator };
+const updatePasswordValidator = z.object({
+  currentPassword: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
+  newPassword: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
+  confirmPassword: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
+}).refine(( {currentPassword,newPassword,confirmPassword})=>{
+  return newPassword === confirmPassword
+},{
+    message: "Passwords do not match",
+});
+
+
+
+export { clientRegisterValidator, clientLoginValidator ,updatePasswordValidator};

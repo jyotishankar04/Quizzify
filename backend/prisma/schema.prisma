@@ -26,7 +26,6 @@ model users {
   updatedAt    DateTime     @updatedAt
 
   // Social Llinks
-  facebook_url  String?
   instagram_url String?
   twitter_url   String?
   linkedin_url  String?
@@ -38,6 +37,7 @@ model users {
   quizzes     Quiz[] // Quizzes created by the user
   submissions Submission[] // Submissions made by the user
   Attempt     Attempt[]
+  Support     Support[]
 }
 
 model Quiz {
@@ -112,6 +112,22 @@ model Attempt {
   usersId String?
   Quiz    Quiz?   @relation(fields: [quizId], references: [id])
   quizId  String?
+}
+
+model Support {
+  id String @id @default(uuid())
+
+  queryTitle       String
+  queryDescription String
+
+  userId String
+  user   users  @relation(fields: [userId], references: [id])
+
+  reply    String?
+  isSolved Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum quizLevel {

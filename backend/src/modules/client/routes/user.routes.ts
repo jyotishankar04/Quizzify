@@ -12,6 +12,6 @@ const router = Router();
 router.use(authMiddleware);
 router.get("/", getUserProfile);
 router.post("/avatar", upload.single("avatar"), uploadUserProfileImage);
-router.patch("/", authMiddleware, updateUserProfile);
+router.patch("/",  updateUserProfile);
 
 export default router;

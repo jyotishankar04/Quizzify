@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCreateUserAuthentication } from "../../lib/reactquery/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -129,9 +129,9 @@ const SignUpForm = () => {
             </button>
             <p className="text-center text-sm text-neutral-600">
               Already have an account?{" "}
-              <button type="submit" className="text-blue-600 hover:underline">
+              <Link to="/auth/signin" className="text-blue-600 hover:underline">
                 Sign In
-              </button>
+              </Link>
             </p>
           </form>
         </div>

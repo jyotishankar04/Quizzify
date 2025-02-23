@@ -97,8 +97,40 @@ export const updateProfile = async (data: TProfileUpdate) => {
   return response.data;
 };
 
+export const uploadUserAvatar = async (data: FormData) => {
+  const response = await axiosApi.post(`/user/avatar`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+export const manualPasswordUpdate = async (data: {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}) => {
+  const response = await axiosApi.put(`/auth/password/update`, data);
+  return response.data;
+};
+
 // Stats
 export const getDashboardStats = async () => {
   const response = await axiosApi.get(`/stats/dashboard`);
+  return response.data;
+};
+
+// Support API
+export const sendSupportQuery = async (data: {
+  queryTitle: string;
+  queryDescription: string;
+}) => {
+  const response = await axiosApi.post(`/support`, data);
+  return response.data;
+};
+
+export const getSupportQueries = async () => {
+  const response = await axiosApi.get(`/support`);
   return response.data;
 };
