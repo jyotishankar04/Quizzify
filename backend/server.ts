@@ -11,10 +11,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        "http://example.com",
-        "https://quizzifyai.vercel.app",
-      ];
+      const allowedOrigins = ["https://quizzifyai.vercel.app"];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
