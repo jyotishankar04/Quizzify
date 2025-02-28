@@ -19,8 +19,6 @@ app.use(
       }
     },
     credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
   })
 );
 app.options("*", cors());
