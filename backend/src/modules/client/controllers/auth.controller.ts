@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import {
   clientLoginValidator,
-  clientRegisterValidator, updatePasswordValidator,
+  clientRegisterValidator,
+  updatePasswordValidator,
 } from "../../../validator/auth.client.validator";
 import createHttpError from "http-errors";
 import {
@@ -13,6 +14,7 @@ import {
 } from "../services/auth.service";
 import { ICustomRequest } from "../../../types/client.types";
 import prisma from "../../../config/prisma.config";
+import { _config } from "../../../config/env.config";
 
 export const register = async (
   req: Request,
@@ -48,6 +50,9 @@ export const register = async (
 
     res.cookie("authToken", token, {
       httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      sameSite: _config.NODE_ENV === "production" ? "none" : "lax",
+      secure: _config.NODE_ENV === "production",
     });
 
     return res.status(201).json({
@@ -92,6 +97,9 @@ export const login = async (
 
     res.cookie("authToken", token, {
       httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      sameSite: _config.NODE_ENV === "production" ? "none" : "lax",
+      secure: _config.NODE_ENV === "production",
     });
 
     return res.status(200).json({
@@ -136,7 +144,11 @@ export const getSession = async (
   }
 };
 
-export  const updatePassword  = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+export const updatePassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
   try {
     const _req = req as ICustomRequest;
     const user = _req.user;
@@ -144,10 +156,10 @@ export  const updatePassword  = async (req: Request, res: Response, next: NextFu
     if (!userExist) {
       return next(createHttpError(404, "User not found"));
     }
-   const body = req.body;
-    const  validate = updatePasswordValidator.safeParse(body);
+    const body = req.body;
+    const validate = updatePasswordValidator.safeParse(body);
 
-    if(!validate.success){
+    if (!validate.success) {
       return next(createHttpError(400, validate.error.errors[0].message));
     }
 
@@ -156,17 +168,19 @@ export  const updatePassword  = async (req: Request, res: Response, next: NextFu
     const isValidPassword = await comparePassword({
       password: currentPassword,
       hashedPassword: userExist.password,
-    })
+    });
 
-    if(!isValidPassword){
+    if (!isValidPassword) {
       return next(createHttpError(400, "Invalid current password"));
     }
-    if(currentPassword === newPassword){
-      return next(createHttpError(400, "New password cannot be same as current password"));
+    if (currentPassword === newPassword) {
+      return next(
+        createHttpError(400, "New password cannot be same as current password")
+      );
     }
 
     const hashedPassword = await hashPassword(newPassword);
-      const result = await prisma.users.update({
+    const result = await prisma.users.update({
       where: {
         id: userExist.id,
       },
@@ -174,7 +188,7 @@ export  const updatePassword  = async (req: Request, res: Response, next: NextFu
         password: hashedPassword,
       },
     });
-    if(!result){
+    if (!result) {
       return next(createHttpError(500, "Error in updating password"));
     }
 
@@ -190,8 +204,7 @@ export  const updatePassword  = async (req: Request, res: Response, next: NextFu
     console.log(error);
     return next(createHttpError(400, "message"));
   }
-}
-
+};
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
   try {
