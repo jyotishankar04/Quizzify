@@ -12,11 +12,22 @@ export const axiosApi = axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Credentials": "true",
   },
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "X-XSRF-TOKEN",
 });
+
+// Add a request interceptor to ensure headers are set correctly
+axiosApi.interceptors.request.use(
+  (config) => {
+    // Ensure withCredentials is always true
+    config.withCredentials = true;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // Auth API
 export const createUserAccount = async (user: TUserCreateProp) => {
