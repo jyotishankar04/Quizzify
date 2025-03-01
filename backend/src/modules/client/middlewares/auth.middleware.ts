@@ -18,12 +18,22 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
       email,
     };
     if (!id || !email) {
-      res.clearCookie("authToken");
+      res.clearCookie("authToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/",
+      });
       return next(createHttpError(400, "Access Denied!, Invalid Token"));
     }
     next();
   } catch (err) {
-    res.clearCookie("authToken");
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    });
     return next(createHttpError(400, "Access Denied!, Invalid Token"));
   }
 };

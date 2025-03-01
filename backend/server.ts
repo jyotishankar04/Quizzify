@@ -10,14 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: (origin, callback) => {
-      const allowedOrigins = ["https://quizzifyai.vercel.app"];
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: ["http://localhost:5173"],
     credentials: true,
   })
 );

@@ -66,7 +66,12 @@ const getUserProfile = async (
       },
     });
   } catch (error) {
-    res.clearCookie("authToken");
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    });
     console.log(error);
     return next(createHttpError(400, "Authentication failed!"));
   }
@@ -79,7 +84,7 @@ const uploadUserProfileImage = async (
 ): Promise<any> => {
   try {
     const _req = req as ICustomRequest;
-    console.log(_req.file)
+    console.log(_req.file);
     const user = _req.user;
     const userExist = await checkIsUserExist(user.email);
     if (!userExist) {
@@ -120,8 +125,6 @@ const uploadUserProfileImage = async (
     return next(createHttpError(400, "Image upload failed!"));
   }
 };
-
-
 
 const updateUserProfile = async (
   req: Request,

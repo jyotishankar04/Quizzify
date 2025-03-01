@@ -51,8 +51,8 @@ export const register = async (
     res.cookie("authToken", token, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: _config.NODE_ENV === "production" ? "none" : "lax",
-      secure: _config.NODE_ENV === "production",
+      sameSite: "none",
+      secure: true,
     });
 
     return res.status(201).json({
@@ -98,8 +98,8 @@ export const login = async (
     res.cookie("authToken", token, {
       httpOnly: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      sameSite: _config.NODE_ENV === "production" ? "none" : "lax",
-      secure: _config.NODE_ENV === "production",
+      sameSite: "none",
+      secure: true,
     });
 
     return res.status(200).json({
@@ -138,7 +138,12 @@ export const getSession = async (
       },
     });
   } catch (error) {
-    res.clearCookie("authToken");
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
+    });
     console.log(error);
     return next(createHttpError(400, "Authentication failed!"));
   }
@@ -210,6 +215,9 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
   try {
     res.clearCookie("authToken", {
       httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      path: "/",
     });
     return res.status(200).json({
       success: true,

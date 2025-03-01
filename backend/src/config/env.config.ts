@@ -11,7 +11,7 @@ const config = {
   CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
   REACT_APP_URL: process.env.REACT_APP_URL,
-  NODE_ENV: process.env.NODE_ENV,
+  NODE_ENV: "development",
 };
 
 export const _config = Object.freeze(config);

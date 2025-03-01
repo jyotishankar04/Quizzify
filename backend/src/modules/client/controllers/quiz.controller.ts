@@ -59,7 +59,6 @@ const createQuiz = async (
     } catch (error) {
       console.error("Error parsing JSON:", error);
     }
-    console.log(parsedJson);
     const questions = parsedJson.questions.map((question: any) => ({
       text: question.text,
       Option: question.options.map((option: any) => ({
@@ -471,7 +470,6 @@ const updateExistingQuestions = async (
 
     const { questions } = req.body;
     const validate = questionEditValidator.safeParse(questions);
-    console.log(validate.error);
     if (!validate.success) {
       return next(createHttpError(400, validate.error.errors[0].message));
     }
